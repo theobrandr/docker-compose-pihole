@@ -1,0 +1,20 @@
+version: "3"
+services:
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "80:80/tcp"
+    environment:
+      - TZ='America/Chicago'
+      - WEBPASSWORD=changeTHISpassword1234!
+      #This config uses OpenDNS, replace the IP's below with the primary and secondary IP of your preferred DNS provider.
+      - PIHOLE_DNS_=208.67.220.220;208.67.222.222
+    # Volumes store your data between container upgrades
+    volumes:
+      - './etc-pihole/:/etc/pihole/'
+      - './etc-dnsmasq.d/:/etc/dnsmasq.d/'
+      - '/var/log/pihole/:/var/log/pihole/'
+    restart: unless-stopped
